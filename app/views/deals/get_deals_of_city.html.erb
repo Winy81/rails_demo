@@ -1,1 +1,8 @@
-<p><%= @deals %></p>
+
+<% @deals.each do |data| %>
+  <p><%= data %></p>
+<% end %>
+
+</br>
+
+<%= link_to 'Back', root_path %>
