@@ -1,0 +1,12 @@
+
+<% @deals.each do |deal| %>
+  <p>id of the deal: <%= deal["deal"].nil? ? deal["event"]["id"] : deal["deal"]["id"] %></p>
+  <p>short_title of the deal: <%= deal["deal"].nil? ? deal["event"]["short_title"] : deal["deal"]["short_title"] %></p>
+  <p>price of the deal: <%= deal["deal"].nil? ? deal["event"]["price"] : deal["deal"]["price"] %></p>
+  <p>address_information of the deal: <%= deal["deal"].nil? ? deal["event"]["address_information"] : deal["deal"]["address_information"] %></p>
+  </br></br>
+<% end %>
+
+</br>
+
+<%= link_to 'Back', root_path %>
