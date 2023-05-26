@@ -1,4 +1,10 @@
-<h1>Deals#index</h1>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
 
-<p><%= @data %></p>
+<p><%= @message %></p>
 
+<%= form_for :city, url: deals_get_deals_of_city_path do |f| %>
+  <%= f.text_field :name_of_city %></br></br>
+  <%= f.submit "Send"%>
+<% end %>
