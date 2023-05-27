@@ -29,10 +29,17 @@ class DealsController < ApplicationController
     place_of_deal = params[:location]
 
     unless id_of_deal && place_of_deal == nil
+      local_storage_response = Services::LocalStorageManager.new(id_of_deal).fetch
 
-      request_params = { :method => :get, :url =>  Services::RequestManager.new(place_of_deal, id_of_deal).selected_deal}
-      response = RestClient::Request.execute(request_params)
-      @deal = JSON.parse(response.body)
+      if local_storage_response.nil?
+        request_params = { :method => :get, :url =>  Services::RequestManager.new(place_of_deal, id_of_deal).selected_deal}
+        response = RestClient::Request.execute(request_params)
+        @deal = JSON.parse(response.body)
+        Services::LocalStorageManager.new(id_of_deal, @deal).load
+      else
+        binding.pry
+        @deal = JSON.parse(local_storage_response.gsub("=>", ":").gsub(/\bnil\b/, "null"))
+      end
     else
       flash[:alert] = I18n.t('errors.not_enough_information')
       redirect_to root_path

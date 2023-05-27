@@ -15,6 +15,8 @@ gem 'sass-rails', '>= 6'
 gem 'jbuilder', '~> 2.7'
 # Request helper
 gem 'rest-client'
+# Redis
+gem 'redis'
 
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
