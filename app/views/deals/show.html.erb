@@ -1,0 +1,12 @@
+<p>About selected deal</p>
+
+</br>
+
+  <p>short_title: <%= @deal["deal"].nil? ? @deal["event"]["short_title"] : @deal["deal"]["short_title"] %></p>
+  <p>what_to_expect: <%= @deal["deal"].nil? ? @deal["event"]["price"] : @deal["deal"]["price"] %></p>
+  <p>about: <%= @deal["deal"].nil? ? @deal["event"]["address_information"] : @deal["deal"]["address_information"] %></p>
+
+</br>
+</br>
+
+<%= link_to 'Back', root_path %>
