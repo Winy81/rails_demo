@@ -1,13 +1,13 @@
 class DealsController < ApplicationController
 
-  ACCEPTED_CITIES = ['Glasgow', 'Edinburgh', 'Dundee']
+  CURRENTLY_ACCEPTED_CITIES = ['Glasgow', 'Edinburgh', 'Dundee']
 
   def index
-    @message = 'Please add the name of the City for get deals'
+    @message = I18n.t('infos.select_city')
   end
 
   def get_deals_of_city
-    if ACCEPTED_CITIES.include?(city_deals_search_params[:name_of_city])
+    if CURRENTLY_ACCEPTED_CITIES.include?(city_deals_search_params[:name_of_city])
       request_params = { :method => :get, :url => "https://api.itison.com/api/110/#{city_deals_search_params[:name_of_city]}/all" }
       response = RestClient::Request.execute(request_params)
       @deals = JSON.parse(response.body)
@@ -15,7 +15,7 @@ class DealsController < ApplicationController
       @city = city_deals_search_params[:name_of_city]
       @filter = city_deals_search_params[:filter]
     else
-      flash[:alert] = 'Deals for this city are not available at this moment'
+      flash[:alert] = I18n.t('errors.no_available_even_or_deal')
       redirect_to root_path
     end
   end
@@ -30,7 +30,7 @@ class DealsController < ApplicationController
       response = RestClient::Request.execute(request_params)
       @deal = JSON.parse(response.body)
     else
-      flash[:alert] = 'Not enough details to provide further information'
+      flash[:alert] = I18n.t('errors.not_enough_information')
       redirect_to root_path
     end
   end
