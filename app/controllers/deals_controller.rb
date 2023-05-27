@@ -1,36 +1,40 @@
 class DealsController < ApplicationController
 
-  ACCEPTED_CITIES = ['Glasgow', 'Edinburgh', 'Dundee']
+  CURRENTLY_ACCEPTED_CITIES = ['Glasgow', 'Edinburgh', 'Dundee']
 
   def index
-    @message = 'Please add the name of the City for get deals'
+    @message = I18n.t('infos.select_city')
   end
 
   def get_deals_of_city
 
-    if ACCEPTED_CITIES.include?(city_deals_search_params[:name_of_city])
-      request_params = { :method => :get, :url => "https://api.itison.com/api/110/#{city_deals_search_params[:name_of_city]}/all" }
-      response = RestClient::Request.execute(request_params)
-      @deals = JSON.parse(response.body)
+    if CURRENTLY_ACCEPTED_CITIES.include?(city_deals_search_params[:name_of_city])
 
       @city = city_deals_search_params[:name_of_city]
+      @filter = city_deals_search_params[:filter]
+
+      request_params = { :method => :get, :url => Services::RequestManager.new(@city).all_deal}
+      response = RestClient::Request.execute(request_params)
+
+      @deals = JSON.parse(response.body)
     else
-      flash[:alert] = 'Deals for this city are not available at this moment'
+      flash[:alert] = I18n.t('errors.no_available_even_or_deal')
       redirect_to root_path
     end
   end
 
   def show
 
-    id_of_deal = params[:data_of_deal][:deal].nil? ? params[:data_of_deal][:event][:id] : params[:data_of_deal][:deal][:id]
+    id_of_deal = params[:data_of_deal]
     place_of_deal = params[:location]
 
     unless id_of_deal && place_of_deal == nil
-      request_params = { :method => :get, :url => "https://www.itison.com/api/110/#{place_of_deal}/deals/#{id_of_deal}" }
+
+      request_params = { :method => :get, :url =>  Services::RequestManager.new(place_of_deal, id_of_deal).selected_deal}
       response = RestClient::Request.execute(request_params)
       @deal = JSON.parse(response.body)
     else
-      flash[:alert] = 'Not enough details to provide further information'
+      flash[:alert] = I18n.t('errors.not_enough_information')
       redirect_to root_path
     end
   end
@@ -38,7 +42,11 @@ class DealsController < ApplicationController
   private
 
   def city_deals_search_params
-    params.require(:city).permit(:name_of_city)
+    if params.has_key?(:city)
+      params.require(:city).permit(:name_of_city)
+    elsif params.has_key?(:filtered_city_params)
+      params.require(:filtered_city_params).permit(:name_of_city, :filter)
+    end
   end
 
 end
