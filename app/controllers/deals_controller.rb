@@ -9,7 +9,7 @@ class DealsController < ApplicationController
   def get_deals_of_city
 
     if CURRENTLY_ACCEPTED_CITIES.include?(city_deals_search_params[:name_of_city])
-      binding.pry
+
       @city = city_deals_search_params[:name_of_city]
       @filter = city_deals_search_params[:filter]
 

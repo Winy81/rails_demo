@@ -4,14 +4,7 @@
   <%= f.hidden_field :name_of_city, :value => @city %>
 <% end %>
 
-
-<% @deals.each do |deal| %>
-  <p>id of the deal: <%= link_to type_checked_deal(deal)["id"], deals_show_path(:data_of_deal => type_checked_deal(deal)["id"], :location => @city) %></p>
-  <p>short_title of the deal: <%= type_checked_deal(deal)["short_title"] %></p>
-  <p>price of the deal: <%= type_checked_deal(deal)["price"] %></p>
-  <p>address_information of the deal: <%= type_checked_deal(deal)["address_information"] %></p>
-  </br></br>
-<% end %>
+<%= render 'table_of_get_deals_of_city' %>
 
 </br>
 

@@ -10,4 +10,8 @@ module DealsHelper
     end
   end
 
+  def valid_filtered_deal?(record, filter)
+    record["short_title"].downcase.include?(filter.downcase) ? true : false
+  end
+
 end
