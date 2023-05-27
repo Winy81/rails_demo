@@ -1,3 +1,9 @@
+<%= form_for :filtered_city_params, url: deals_get_deals_of_city_path do |f| %>
+  <%= f.text_field :filter %></br></br>
+  <%= f.submit "Use Filter"%>
+  <%= f.hidden_field :name_of_city, :value => @city %>
+<% end %>
+
 
 <% @deals.each do |deal| %>
   <p>id of the deal: <%= link_to deal["deal"].nil? ? deal["event"]["id"] : deal["deal"]["id"], deals_show_path(:data_of_deal => deal, :location => @city) %></p>
