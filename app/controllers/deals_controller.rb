@@ -37,7 +37,6 @@ class DealsController < ApplicationController
         @deal = JSON.parse(response.body)
         Services::LocalStorageManager.new(id_of_deal, @deal).load
       else
-        binding.pry
         @deal = JSON.parse(local_storage_response.gsub("=>", ":").gsub(/\bnil\b/, "null"))
       end
     else
