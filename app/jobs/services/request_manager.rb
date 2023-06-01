@@ -2,8 +2,8 @@ module Services
   class RequestManager
 
     module API_CONFIG
-      URL = "https://api.itison.com/api"
-      API_VERSION = "110"
+      URL = "https://api.blah.com/api"
+      API_VERSION = "2"
     end
 
     def initialize(city, id=nil)
