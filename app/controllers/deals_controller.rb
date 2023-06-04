@@ -37,7 +37,7 @@ class DealsController < ApplicationController
         @deal = JSON.parse(response.body)
         Services::LocalStorageManager.new(id_of_deal, @deal).load
       else
-        @deal = JSON.parse(local_storage_response.gsub("=>", ":").gsub(/\bnil\b/, "null"))
+        @deal = JSON.parse(formatted_sored_response(local_storage_response))
       end
     else
       flash[:alert] = I18n.t('errors.not_enough_information')
@@ -53,6 +53,10 @@ class DealsController < ApplicationController
     elsif params.has_key?(:filtered_city_params)
       params.require(:filtered_city_params).permit(:name_of_city, :filter)
     end
+  end
+
+  def formatted_sored_response(response)
+    response.gsub("=>", ":").gsub(/\bnil\b/, "null")
   end
 
 end
