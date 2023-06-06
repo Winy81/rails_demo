@@ -14,7 +14,7 @@ class DealsController < ApplicationController
       @filter = city_deals_search_params[:filter]
 
       request_params = { :method => :get, :url => Services::RequestManager.new(@city).all_deal}
-      response = RestClient::Request.execute(request_params)
+      response = request_execution(request_params)
 
       @deals = JSON.parse(response.body)
     else
@@ -33,7 +33,7 @@ class DealsController < ApplicationController
 
       if local_storage_response.nil?
         request_params = { :method => :get, :url =>  Services::RequestManager.new(place_of_deal, id_of_deal).selected_deal}
-        response = RestClient::Request.execute(request_params)
+        response = request_execution(request_params)
         @deal = JSON.parse(response.body)
         Services::LocalStorageManager.new(id_of_deal, @deal).load
       else
@@ -57,6 +57,10 @@ class DealsController < ApplicationController
 
   def formatted_sored_response(response)
     response.gsub("=>", ":").gsub(/\bnil\b/, "null")
+  end
+
+  def request_execution(params)
+    RestClient::Request.execute(params)
   end
 
 end
